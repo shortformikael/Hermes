@@ -1,31 +1,44 @@
 package config
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/shortformikael/Hermes/src/internal/logger"
 )
 
-type Config struct {
-	TelegramToken  string
-	TelegramChatID string
-	Port           string
+type config struct {
+	TelegramToken  string `json:"telegram_token"`
+	TelegramChatID string `json:"telegram_chat_id"`
+	Port           string `json:"port"`
 }
 
-var config *Config
+var cfg *config
 
 // Serialize config to JSON
 
 func Init() {
 	logger.Info("Initializing config...")
 	defer logger.Info("Config initialized successfully")
-	config = &Config{
-		TelegramToken:  os.Getenv("TELEGRAM_TOKEN"),
-		TelegramChatID: os.Getenv("TELEGRAM_CHAT_ID"),
-		Port:           os.Getenv("PORT"),
+
+	// TODO: Add config validation
+	// TODO: Add routine to create config.json if it doesn't exist
+
+	configJson, err := os.ReadFile("config.json")
+	if err != nil {
+		logger.Error(fmt.Sprintf("Failed to read config.json: %v", err))
+		os.Exit(1)
 	}
+	err = json.Unmarshal(configJson, &cfg)
+	if err != nil {
+		logger.Error(fmt.Sprintf("Failed to unmarshal config.json: %v", err))
+		os.Exit(1)
+	}
+
+	// logger.Info(fmt.Sprintf("Loaded config: %+v", config))
 }
 
-func GetConfig() *Config {
-	return config
+func Get() *config {
+	return cfg
 }

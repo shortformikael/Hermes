@@ -2,6 +2,8 @@
 package hermes
 
 import (
+	"fmt"
+
 	"github.com/shortformikael/Hermes/src/internal/config"
 	"github.com/shortformikael/Hermes/src/internal/logger"
 	"github.com/shortformikael/Hermes/src/internal/router"
@@ -18,5 +20,9 @@ func Init() {
 
 func Exec() {
 	logger.Info("Executing...")
+
+	cfg := config.Get()
+	logger.Info(fmt.Sprintf("Loaded config: %+v", cfg))
+
 	defer logger.Info("Hermes executed successfully")
 }
