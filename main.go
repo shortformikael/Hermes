@@ -1,17 +1,10 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/shortformikael/Hermes/src/testm"
-
-	"rsc.io/quote"
+	"github.com/shortformikael/Hermes/src/cmd/hermes"
 )
 
 func main() {
-	fmt.Println(quote.Go())
-
-	m := testm.Greet("James")
-
-	fmt.Println(m)
+	hermes.Init()
+	hermes.Exec()
 }
